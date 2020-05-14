@@ -93,5 +93,5 @@ public class Automobili {
 		this.vrsta_goriva = vrsta_goriva;
 	}
 	
-	
+	 
 }

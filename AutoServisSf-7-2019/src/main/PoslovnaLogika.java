@@ -67,15 +67,72 @@ public class PoslovnaLogika {
 				String lozinka=dijelovi[8];
 				String uloga=dijelovi[9];
 				double plata=Double.parseDouble(dijelovi[10]);
-				System.out.println("ime Automehanicara: " + ime + "prezime: " + prezime);
+				System.out.println("ime Automehanicara: " + ime + "prezime: " + prezime); 
+				
+				
+			}
+			reader.close();
+		}catch(IOException e) {
+			System.out.println("Greska prilikom iscitavanja fajla"); }	
+	}
+   
+
+
+		
+	
+	public void upisiUFajlMusterija() {
+		try {
+			FileWriter fw=new FileWriter("src/fajlovi/musterije.txt");
+			BufferedWriter bw= new BufferedWriter(fw);
+			
+			Iterator<Musterija> iter=this.listaMusterija.iterator();
+			while(iter.hasNext()) {
+				Musterija m=iter.next();
+				
+				bw.write(m.getId() + "|" + m.getIme() + "|" + m.getPrezime()+ "|" + m.getJMBG() + "|" + m.getPol() + "|" + m.getAdresa() + "|" + m.getBrTel() + "|" + m.getKorIme() + "|" + m.getLozinka() + "|" + m.getUloga() + "|" + m.getBrojSkupljenihBodova());
+				bw.newLine();
+				
+			}
+			bw.close();
+		}catch(IOException e) {
+			System.out.println("Greska prilikom ucitavanja fajla");
+   }
+	}
+
+	public void procitajIzFajlaMusterije() {
+		try {
+			File file=new File("src/fajlovi/musterije.txt");
+			BufferedReader reader=new BufferedReader(new FileReader(file));
+			String line;
+			while((line=reader.readLine())!=null) {
+				String[] dijelovi=line.split("\\|");
+				int id=Integer.parseInt(dijelovi[0]);
+				String ime=dijelovi[1];
+				String prezime=dijelovi[2];
+				String JMBG=dijelovi[3];
+				String pol=dijelovi[4];
+				String adresa=dijelovi[5];
+				String brTel=dijelovi[6];
+				String korIme=dijelovi[7];
+				String lozinka=dijelovi[8];
+				String uloga=dijelovi[9];
+				int brojSkupljenihBodova=Integer.parseInt(dijelovi[10]);
+				System.out.println("Ime musterije:" + ime + "Prezime:" + prezime);
+				
 				
 				
 			}
 			reader.close();
 		}catch(IOException e) {
 			System.out.println("Greska prilikom iscitavanja fajla");
-			
 		}
+		}
+		
 	}
+
+
 	
-}
+	
+	
+		
+		
