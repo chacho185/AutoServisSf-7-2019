@@ -1,11 +1,14 @@
 package osoba;
 
 import enumeracija.Pol;
+import enumeracija.Uloga;
 
 public abstract class Korisnik {
 
 	
 	//me, prezime, JMBG, pol, adresa, broj telefona, korisničko ime i lozinka.
+	
+	private int id;
 	private String ime;
 	private String prezime;
 	private Pol pol;
@@ -13,27 +16,42 @@ public abstract class Korisnik {
 	private String brTel;
 	private String korIme;
 	private String lozinka;
+	private Uloga uloga;
+	private String JMBG;
 	
 	public Korisnik() {
 		super();
+		this.id =0;
 		this.ime = "";
 		this.prezime = "";
 		this.pol = pol.MUSKI;
 		this.brTel = "";
 		this.korIme = "";
 		this.lozinka = "";
+		this.uloga = uloga.MUSTERIJA;
+		this.JMBG = "";
 		
 	}
 	
-	public Korisnik(String ime, String prezime, Pol pol, String adresa, String brTel, String korIme, String lozinka) {
+	public Korisnik(int id,String ime, String prezime,String JMBG, Pol pol, String adresa, String brTel, String korIme, String lozinka,Uloga uloga) {
 		super();
+		this.id = id;
 		this.ime = ime;
 		this.prezime = prezime;
+		this.JMBG = JMBG;
 		this.pol = pol;
 		this.adresa = adresa;
 		this.brTel = brTel;
 		this.korIme = korIme;
 		this.lozinka = lozinka;
+		this.uloga = uloga;
+	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getIme() {
@@ -90,6 +108,21 @@ public abstract class Korisnik {
 
 	public void setLozinka(String lozinka) {
 		this.lozinka = lozinka;
+	}
+	public Uloga getUloga() {
+		return uloga;
+	}
+
+	public void setUloga(Uloga uloga) {
+		this.uloga = uloga;
+	}
+
+	public String getJMBG() {
+		return JMBG;
+	}
+
+	public void setJMBG(String jMBG) {
+		JMBG = jMBG;
 	}
 	
 	
