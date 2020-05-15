@@ -6,6 +6,7 @@ import enumeracija.model_automobila;
 import osoba.Musterija;
 
 public class Automobili {
+	private int id;
 	private Musterija vlasnik;
 	private Marka_automobila marka;
 	private model_automobila model;
@@ -16,6 +17,7 @@ public class Automobili {
 	
 	public Automobili() {
 		super();
+		this.id=0;
 		this.vlasnik=new Musterija();
 		this.marka=Marka_automobila.AUDI;
 		this.model=model_automobila.A5;
@@ -25,9 +27,10 @@ public class Automobili {
 		this.vrsta_goriva=Vrsta_goriva.DIZEL;
 	}
 
-	public Automobili(Musterija vlasnik, Marka_automobila marka, model_automobila model, int godina_proizvodnje,
+	public Automobili(int id,Musterija vlasnik, Marka_automobila marka, model_automobila model, int godina_proizvodnje,
 			double zapremina_motora, int snaga_motora, Vrsta_goriva vrsta_goriva) {
 		super();
+		this.id=id;
 		this.vlasnik = vlasnik;
 		this.marka = marka;
 		this.model = model;
@@ -37,6 +40,7 @@ public class Automobili {
 		this.vrsta_goriva = vrsta_goriva;
 	}
 
+	
 	public Musterija getVlasnik() {
 		return vlasnik;
 	}
@@ -91,6 +95,14 @@ public class Automobili {
 
 	public void setVrsta_goriva(Vrsta_goriva vrsta_goriva) {
 		this.vrsta_goriva = vrsta_goriva;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	 
