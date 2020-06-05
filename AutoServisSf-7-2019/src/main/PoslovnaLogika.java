@@ -272,7 +272,37 @@ public class PoslovnaLogika {
 	
 		}
 	}
+	
+	public Administrator izmjeniAdministratora(Administrator a) {
+		for(Administrator ad:listaAdministratora) {
+			if(a.getId()==ad.getId()) {
+				ad.setIme(a.getIme());
+				ad.setPrezime(a.getPrezime());
+			}
+			else {
+				System.out.println("Ne postoji taj Administrator");
+			}
+		}
+		return a;
 	}
+	
+	public void obrisiAdministratora(Administrator a) {
+		for(Administrator ad:listaAdministratora) {
+			if(ad.getId()==a.getId()) {
+				this.listaAdministratora.remove(ad);
+				System.out.println("obrisan");
+			}
+		}
+	}
+	public List<Administrator> getListaAdministratora() {
+		return listaAdministratora;
+	}
+	public void setListaAdministratora(List<Administrator> listaAdministratora) {
+		this.listaAdministratora = listaAdministratora;
+	}
+	
+	
+}
 
 	
 
