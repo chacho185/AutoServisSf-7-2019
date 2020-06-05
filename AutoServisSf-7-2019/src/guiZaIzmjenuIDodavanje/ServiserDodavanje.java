@@ -12,13 +12,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import enumeracija.Pol;
+import enumeracija.Specijalizacija;
 import enumeracija.Uloga;
 import main.PoslovnaLogika;
 import net.miginfocom.swing.MigLayout;
 import osoba.Administrator;
-import osoba.Musterija;
+import osoba.Serviser;
 
-public class MusterijaDodavanje extends JFrame {
+public class ServiserDodavanje extends JFrame {
 
 	
 	private int brojac = 0;
@@ -40,22 +41,24 @@ public class MusterijaDodavanje extends JFrame {
 	private JComboBox<Uloga> cbUloga = new JComboBox<Uloga>(Uloga.values());
 	private JLabel lblJMBG = new JLabel("JMBG");
 	private JTextField txtJMBG = new JTextField(20);
-	private JLabel lblBrojSkupljenihBodova = new JLabel("BrojSkupljenihBodova");
-	private JTextField txtBrojSkupljenihBodova = new JTextField(20);
+	private JLabel lblPlate = new JLabel("Plata");
+	private JTextField txtPlata = new JTextField(20);
+	private JLabel lblSpecijalizacija = new JLabel("Specijalizacija");
+	private JComboBox<Specijalizacija> cbSpecijalizacija = new JComboBox<Specijalizacija>(Specijalizacija.values());
 	
-	private JButton btnOK = new  JButton ("OK");
-	private JButton btnCancel = new JButton ("Cancel");
+	private JButton btnOK = new JButton("OK");
+	private JButton btnCancel = new JButton("Cancel");
 	
 	private PoslovnaLogika poslovnaLogika;
-	private Musterija musterija;
+	private Serviser serviser;
 	
-	public MusterijaDodavanje(Musterija musterija) {
-		this.musterija = musterija;
+	public ServiserDodavanje(Serviser serviser) {
+		this.serviser = serviser;
 		
-		if(this.musterija == null) {
-			setTitle("Dodavanje novog musterije");
+		if(this.serviser == null) {
+			setTitle("Dodavanje novog servisera");
 		}else {
-			setTitle("Izmjena musterije: " + this.musterija.getKorIme());
+			setTitle("Izmjena servisera: " + this.serviser.getKorIme());
 		}
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -64,50 +67,51 @@ public class MusterijaDodavanje extends JFrame {
 		setResizable(false);
 		pack();
 	}
-	
-	private void initListener() {
-		btnOK.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(validacija() == true) {
-					int id = ++brojac;
-					String ime = txtIme.getText().trim();
-					String prezime = txtPrezime.getText().trim();
-					Pol pol = (Pol) cbPol.getSelectedItem();
-					String adresa = txtAdresa.getText().trim();
-					String brojTelefona = txtBrojTelefona.getText().trim();
-					String korIme = txtKorisinickoIme.getText().trim();
-					String lozinka = new String(txtLozinka.getPassword()).trim();
-					Uloga uloga = (Uloga) cbUloga.getSelectedItem();
-					String jmbg = txtJMBG.getText().trim();
-					int BrojSkupljenihBodova =  Integer.parseInt(txtBrojSkupljenihBodova.getText().trim());
-					
-					if(musterija == null) {
-						musterija = new Musterija(id, ime, prezime, jmbg, pol, adresa, brojTelefona, korIme, lozinka, uloga, BrojSkupljenihBodova);
-						poslovnaLogika.dodajUListuMusterija(musterija);
-					}else {
-						musterija.setId(id);
-						musterija.setPrezime(prezime);
-						musterija.setPol(pol);
-						musterija.setAdresa(adresa);
-						musterija.setBrTel(brojTelefona);
-						musterija.setKorIme(korIme);
-						musterija.setLozinka(lozinka);
-						musterija.setUloga(uloga);
-						musterija.setJMBG(jmbg);
-						musterija.setBrojSkupljenihBodova(BrojSkupljenihBodova);
-					}
-					poslovnaLogika.upisiUFajlAdministratora();
-					MusterijaDodavanje.this.dispose();
-					MusterijaDodavanje.this.setVisible(false);
-				}	
-			}
-		});
-	}
+
+
+		private void initListener() {
+			btnOK.addActionListener(new ActionListener() {
 				
-
-
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(validacija() == true) {
+						int id = ++brojac;
+						String ime = txtIme.getText().trim();
+						String prezime = txtPrezime.getText().trim();
+						Pol pol = (Pol) cbPol.getSelectedItem();
+						String adresa = txtAdresa.getText().trim();
+						String brojTelefona = txtBrojTelefona.getText().trim();
+						String korIme = txtKorisinickoIme.getText().trim();
+						String lozinka = new String(txtLozinka.getPassword()).trim();
+						Uloga uloga = (Uloga) cbUloga.getSelectedItem();
+						String jmbg = txtJMBG.getText().trim();
+						double plata = Double.parseDouble(txtPlata.getText().trim());
+						Specijalizacija specijalizacija = (Specijalizacija) cbSpecijalizacija.getSelectedItem();
+								
+					
+						if(serviser == null) {
+							serviser = new Serviser(id, ime, prezime, jmbg, pol, adresa, brojTelefona, korIme, lozinka, uloga, plata,specijalizacija);
+							poslovnaLogika.dodajUListuServisera(serviser);
+						}else {
+							serviser.setId(id);
+							serviser.setPrezime(prezime);
+							serviser.setPol(pol);
+							serviser.setAdresa(adresa);
+							serviser.setBrTel(brojTelefona);
+							serviser.setKorIme(korIme);
+							serviser.setLozinka(lozinka);
+							serviser.setUloga(uloga);
+							serviser.setJMBG(jmbg);
+							serviser.setPlata(plata);
+						}
+						poslovnaLogika.upisiUFajlAdministratora();
+						ServiserDodavanje.this.dispose();
+						ServiserDodavanje.this.setVisible(false);
+					}	
+				}
+			});
+		}
+		
 		private boolean validacija() {
 			boolean ok = true;
 			String poruka = "Molimo vas da popravite sledece greske u unosu:\n";
@@ -141,10 +145,11 @@ public class MusterijaDodavanje extends JFrame {
 				ok = false;
 			}
 			try {
-				Integer.parseInt(txtBrojSkupljenihBodova.getText().trim());
+				Double.parseDouble(txtPlata.getText().trim());
 			}catch(Exception e) {
-				poruka += "- BrojSkupljenihBodova mora biti broj";
+				poruka += "- plata mora biti broj";
 				ok = false;
+				
 			}
 			if(ok == false) {
 				JOptionPane.showMessageDialog(null, poruka, "Neispravni podaci", JOptionPane.WARNING_MESSAGE);
@@ -152,12 +157,11 @@ public class MusterijaDodavanje extends JFrame {
 			return ok;
 		}
 		
-		
 		private void initGUI() {
 			MigLayout mig = new MigLayout("wrap 2");
 			setLayout(mig);
 			
-			if(this.musterija != null) {
+			if(this.serviser != null) {
 				popuniPolja();
 				
 				add(lblIme);
@@ -178,26 +182,27 @@ public class MusterijaDodavanje extends JFrame {
 				add(cbUloga);
 				add(lblJMBG);
 				add(txtJMBG);
-				add(lblBrojSkupljenihBodova);
-				add(txtBrojSkupljenihBodova);
+				add(lblPlate);
+				add(txtPlata);
+				add(lblSpecijalizacija);
+				add(cbSpecijalizacija);
 				add(new JLabel());
 				add(btnOK, "split 2");
 				add(btnCancel);
 			}
 		}
-
+		
 		private void popuniPolja() {
-			txtIme.setText(this.musterija.getIme());
-			txtPrezime.setText(this.musterija.getPrezime());
-			cbPol.setSelectedItem(this.musterija.getPol());
-			txtAdresa.setText(this.musterija.getAdresa());
-			txtBrojTelefona.setText(this.musterija.getBrTel());
-			txtKorisinickoIme.setText(this.musterija.getKorIme());
-			txtLozinka.setText(this.musterija.getLozinka());
-			cbUloga.setSelectedItem(this.musterija.getUloga());
-			txtJMBG.setText(this.musterija.getJMBG());
-			txtBrojSkupljenihBodova.setText(String.valueOf(this.musterija.getBrojSkupljenihBodova()));
+			txtIme.setText(this.serviser.getIme());
+			txtPrezime.setText(this.serviser.getPrezime());
+			cbPol.setSelectedItem(this.serviser.getPol());
+			txtAdresa.setText(this.serviser.getAdresa());
+			txtBrojTelefona.setText(this.serviser.getBrTel());
+			txtKorisinickoIme.setText(this.serviser.getKorIme());
+			txtLozinka.setText(this.serviser.getLozinka());
+			cbUloga.setSelectedItem(this.serviser.getUloga());
+			txtJMBG.setText(this.serviser.getJMBG());
+			txtPlata.setText(String.valueOf(this.serviser.getPlata()));
 		}
 	}
-
 
