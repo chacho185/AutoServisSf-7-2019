@@ -37,7 +37,15 @@ public class Servis {
 		this.lista_dijelova = lista_dijelova;
 		this.status = status;
 	}
-
+	public Servis(Automobili automobil, Serviser serviser, Date termin, String opis,Status status)
+			 {
+		super();
+		this.automobil = automobil;
+		this.serviser = serviser;
+		this.termin = termin;
+		this.opis = opis;
+		this.status = status;
+	}
 	public Automobili getAutomobil() {
 		return automobil;
 	}

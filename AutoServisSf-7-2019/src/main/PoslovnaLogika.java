@@ -379,7 +379,15 @@ public class PoslovnaLogika {
 		}
 		return null;
 	}
-	
+	public Automobili nadjiAutomobil(String m) {
+		for(Automobili a:listaAutomobila) {
+			if(m.equals(a.getMarka())) {
+				return a;
+				
+			}
+		}
+		return null;
+	}
 	
 	public Automobili getAutomobilById(int id)  {
 		for(Automobili a:listaAutomobila) {
@@ -515,6 +523,10 @@ public class PoslovnaLogika {
 	public List<ServisnaKnjizica> getListaServisnihKnj() {
 		return listaKnjizica;
 	}
+	public List<Serviser> getListaServisera() {
+		return listaServisera;
+	}
+
 }
 
 
