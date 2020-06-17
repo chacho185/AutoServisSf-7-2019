@@ -6,29 +6,40 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import enumeracija.Marka_automobila;
 import osoba.Administrator;
 import osoba.Musterija;
 import osoba.Serviser;
 import servis.Automobili;
+import servis.Servis;
+import servis.ServisnaKnjizica;
+import servis.ServisniDio;
 
 public class PoslovnaLogika {
 
 	private List<Administrator> listaAdministratora;
 	private List<Musterija> listaMusterija;
 	private List<Automobili> listaAutomobila;
-	private List<Serviser> listaServisa;
+	private List<Serviser> listaServisera;
+	private List<ServisniDio> listaServisniDio;
+	private List<Servis> listaServisa;
+	private List<ServisnaKnjizica> listaKnjizica;
 	
 	public PoslovnaLogika() {
 		this.listaAdministratora=new ArrayList<Administrator>();
 		this.listaMusterija=new ArrayList<Musterija>();
 		this.listaAutomobila=new ArrayList<Automobili>();
-		this.listaServisa=new ArrayList<Serviser>();
-		
+		this.listaServisera=new ArrayList<Serviser>();
+		this.listaServisniDio = new ArrayList<ServisniDio>();
+		this.listaServisa = new ArrayList<Servis>();
+		this.listaKnjizica = new ArrayList<ServisnaKnjizica>();
 	}
 	public void dodajUListuAdministratora(Administrator admin) {
 		this.listaAdministratora.add(admin);
@@ -43,9 +54,165 @@ public class PoslovnaLogika {
 	}
 	
 	public void dodajUListuServisera(Serviser serviser) {
-		this.listaServisa.add(serviser);
+		this.listaServisera.add(serviser);
 		
 	}
+	
+	public void dodajUListuServisniDio(ServisniDio sd) {
+		this.listaServisniDio.add(sd);
+		
+	}
+	public void dodajUListuServis(Servis servis) {
+		this.listaServisa.add(servis);
+		
+	}
+	
+	public void dodajUListuKnji(ServisnaKnjizica servisnaKnj) {
+		this.listaKnjizica.add(servisnaKnj);
+		
+	}
+	
+	public void upisiUFajlServisnuKnj(){
+		try {
+			FileWriter fw=new FileWriter("src/fajlovi/servisnaKnjizica.txt");
+			
+			BufferedWriter bw= new BufferedWriter(fw);
+			
+			Iterator<ServisnaKnjizica> iter=this.listaKnjizica.iterator();
+			while(iter.hasNext()) {
+				ServisnaKnjizica s=iter.next();
+//				System.out.println(s.getAutomobil().getGodina_proizvodnje());
+				bw.write(String.valueOf(s.getAutomobil().getId()));
+				bw.newLine();
+				
+			}
+			bw.close();
+		}catch(IOException e) {
+			System.out.println("Greska prilikom ucitavanja fajla");
+			
+		}
+	}
+	
+	
+	public void procitajIzFajlaServisnuKnj(){
+		try {
+			File file=new File("src/fajlovi/servisnaKnjizica.txt");
+			BufferedReader reader=new BufferedReader(new FileReader(file)); 
+			
+			 
+			String line;
+			while((line=reader.readLine())!=null) {
+				String[] dijelovi=line.split("\\|");
+				Automobili automobil= getAutomobilById(Integer.parseInt(dijelovi[0]));
+				
+				System.out.println("servis automobil: " + automobil.getGodina_proizvodnje()); 
+				
+				
+			}
+			reader.close();
+		}catch(IOException e) {
+			System.out.println("Greska prilikom iscitavanja fajla"); 
+		
+		}
+	}
+	
+	public void upisiUFajlServis() {
+		try {
+			FileWriter fw=new FileWriter("src/fajlovi/servis.txt");
+			DateFormat konverter = new SimpleDateFormat("dd.MM.yyyy HH.mm");
+			BufferedWriter bw= new BufferedWriter(fw);
+			
+			Iterator<Servis> iter=this.listaServisa.iterator();
+			while(iter.hasNext()) {
+				Servis s=iter.next();
+				String termin = konverter.format(s.getTermin());
+				bw.write(s.getAutomobil().getId() + "|" + s.getServiser().getKorIme()+ "|" + termin + "|" + s.getOpis() + "|" + s.getStatus());
+				bw.newLine();
+				
+			}
+			bw.close();
+		}catch(IOException e) {
+			System.out.println("Greska prilikom ucitavanja fajla");
+			
+		}
+	}
+
+	public void procitajIzFajlaServis() throws ParseException {
+		try {
+			File file=new File("src/fajlovi/servis.txt");
+			BufferedReader reader=new BufferedReader(new FileReader(file)); 
+			
+			 
+			String line;
+			DateFormat konverter = new SimpleDateFormat("dd.MM.yyyy HH.mm");
+			while((line=reader.readLine())!=null) {
+				String[] dijelovi=line.split("\\|");
+				Automobili automobil= getAutomobilById(Integer.parseInt(dijelovi[0]));
+				
+				Serviser serviser= getServiserByKorIme(dijelovi[1]);
+
+				String terminn = dijelovi[2];
+				Date termin = konverter.parse(terminn);
+				String opis=dijelovi[3];
+				String status=dijelovi[4];
+				
+				System.out.println("servis automobil: " + automobil.getGodina_proizvodnje()); 
+				
+				
+			}
+			reader.close();
+		}catch(IOException e) {
+			System.out.println("Greska prilikom iscitavanja fajla"); 
+		
+		}
+	}
+	
+	
+	
+	
+	public void upisiUFajlServisniDio() {
+		try {
+			FileWriter fw=new FileWriter("src/fajlovi/servisniDio.txt");
+			BufferedWriter bw= new BufferedWriter(fw);
+			
+			Iterator<ServisniDio> iter=this.listaServisniDio.iterator();
+			while(iter.hasNext()) {
+				ServisniDio s=iter.next();
+				
+				bw.write(s.getNaziv_dijela() + "|" + s.getCijena()+ "|" + s.getMarka() + "|" + s.getModel());
+				bw.newLine();
+				
+			}
+			bw.close();
+		}catch(IOException e) {
+			System.out.println("Greska prilikom ucitavanja fajla");
+			
+		}
+	}
+	
+	public void procitajIzFajlaServisniDio() {
+		try {
+			File file=new File("src/fajlovi/servisniDio.txt");
+			BufferedReader reader=new BufferedReader(new FileReader(file)); 
+			
+			 
+			String line;
+			while((line=reader.readLine())!=null) {
+				String[] dijelovi=line.split("\\|");
+				String naziv_djela=dijelovi[0];
+				double cijena=Double.parseDouble(dijelovi[1]);
+				String marka=dijelovi[2];
+				String model=dijelovi[3];
+				
+				System.out.println("Servisni dio: " + naziv_djela); 
+				
+				
+			}
+			reader.close();
+		}catch(IOException e) {
+			System.out.println("Greska prilikom iscitavanja fajla"); }	
+	}
+	
 	public void upisiUFajlAdministratora() {
 		try {
 			FileWriter fw=new FileWriter("src/fajlovi/administratori.txt");
@@ -214,14 +381,45 @@ public class PoslovnaLogika {
 	}
 	
 	
+	public Automobili getAutomobilById(int id)  {
+		for(Automobili a:listaAutomobila) {
+			if(id == a.getId()) {
+				return a;
+			
+			}
+	
+		}
+		return null;
+	}
+	
+	public Musterija getMusterijaByKorIme(String korIme)  {
+		for(Musterija m:listaMusterija) {
+			if(korIme==m.getKorIme()) {
+				return m;
+			
+			}
+	
+		}
+		return null;
+	}
 
+	public Serviser getServiserByKorIme(String korIme)  {
+		for(Serviser s:listaServisera) {
+			if(korIme==s.getKorIme()) {
+				return s;
+			
+			}
+	
+		}
+		return null;
+	}
 
 	public void upisiUFajlServisera() {
 		try {
 			FileWriter fw =new FileWriter("src/fajlovi/serviser.txt");
 			BufferedWriter bw =new BufferedWriter(fw);
 			
-			Iterator<Serviser> iter=this.listaServisa.iterator();
+			Iterator<Serviser> iter=this.listaServisera.iterator();
 			while(iter.hasNext()) {
 				Serviser s=iter.next();
 				
@@ -300,9 +498,25 @@ public class PoslovnaLogika {
 	public void setListaAdministratora(List<Administrator> listaAdministratora) {
 		this.listaAdministratora = listaAdministratora;
 	}
+	public List<Automobili> getListaAutomobila() {
+		return listaAutomobila;
+	}
+	public List<Musterija> getListaMusterija() {
+		return listaMusterija;
+	}
+	public List<ServisniDio> getListaServisniDio() {
+		return listaServisniDio;
+	}
+
+	public List<Servis> getListaServisa() {
+		return listaServisa;
+	}
 	
-	
+	public List<ServisnaKnjizica> getListaServisnihKnj() {
+		return listaKnjizica;
+	}
 }
+
 
 	
 

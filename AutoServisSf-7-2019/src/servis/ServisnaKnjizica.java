@@ -16,6 +16,11 @@ public class ServisnaKnjizica {
 		
 	}
 
+	public ServisnaKnjizica(Automobili a) {
+		super();
+		this.automobil= a;
+	}
+	
 	public ServisnaKnjizica(Automobili automobil, List<Servis> lista_servisa) {
 		super();
 		this.automobil = automobil;
