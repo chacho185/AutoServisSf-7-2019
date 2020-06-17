@@ -121,8 +121,7 @@ public class AutomobilDodavanje extends JFrame {
 
 	private void initGUI() {
 		// TODO Auto-generated method stub
-		MigLayout mig = new MigLayout("wrap 2");
-		setLayout(mig);
+	
 		
 		if(this.automobil != null) {
 			popuniPolja();
