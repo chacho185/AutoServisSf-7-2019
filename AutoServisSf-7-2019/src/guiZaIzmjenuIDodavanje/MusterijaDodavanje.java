@@ -49,8 +49,9 @@ public class MusterijaDodavanje extends JFrame {
 	private PoslovnaLogika poslovnaLogika;
 	private Musterija musterija;
 	
-	public MusterijaDodavanje(Musterija musterija) {
+	public MusterijaDodavanje(PoslovnaLogika poslovnaLogika,Musterija musterija) {
 		this.musterija = musterija;
+		this.poslovnaLogika = poslovnaLogika;
 		
 		if(this.musterija == null) {
 			setTitle("Dodavanje novog musterije");

@@ -421,6 +421,26 @@ public class PoslovnaLogika {
 		}
 		return null;
 	}
+	
+	public Administrator nadjiAdministratoraPoKorIme(String korIme) {
+		for(Administrator a: listaAdministratora) {
+			if(a.getKorIme().equals(korIme)) {
+				return a;
+			}
+			
+		}
+		return null;
+	}
+	
+	public Musterija nadjiMusterijuPoKorIme(String korIme) {
+		for(Musterija m: listaMusterija) {
+			if(m.getKorIme().equals(korIme)) {
+				return m;
+			}
+		}
+		return null;
+	}
+	
 
 	public void upisiUFajlServisera() {
 		try {

@@ -49,8 +49,9 @@ public class AdministratorDodavanje extends JFrame {
 	private PoslovnaLogika poslovnaLogika;
 	private Administrator administrator;
 	
-	public AdministratorDodavanje(Administrator administrator) {
+	public AdministratorDodavanje(PoslovnaLogika poslovnaLogika,Administrator administrator) {
 		this.administrator = administrator;
+		this.poslovnaLogika = poslovnaLogika;
 		
 		if(this.administrator == null) {
 			setTitle("Dodavanje novog administratora");
