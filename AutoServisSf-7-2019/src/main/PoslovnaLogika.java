@@ -520,7 +520,7 @@ public class PoslovnaLogika {
 		return listaServisa;
 	}
 	
-	public List<ServisnaKnjizica> getListaServisnihKnj() {
+	public List<ServisnaKnjizica> getListaServisnahKnj() {
 		return listaKnjizica;
 	}
 	public List<Serviser> getListaServisera() {
