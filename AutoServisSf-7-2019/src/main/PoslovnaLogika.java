@@ -441,6 +441,15 @@ public class PoslovnaLogika {
 		return null;
 	}
 	
+	public Serviser nadjiServiseraPoKorIme(String korime) {
+		for(Serviser s: listaServisera) {
+			if(s.getKorIme().equals(korime)) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
 
 	public void upisiUFajlServisera() {
 		try {

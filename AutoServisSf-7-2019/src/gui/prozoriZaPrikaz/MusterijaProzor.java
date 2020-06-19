@@ -14,10 +14,10 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import guiZaIzmjenuIDodavanje.AdministratorDodavanje;
+
 import guiZaIzmjenuIDodavanje.MusterijaDodavanje;
 import main.PoslovnaLogika;
-import osoba.Administrator;
+
 import osoba.Musterija;
 
 public class MusterijaProzor extends JFrame {

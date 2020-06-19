@@ -12,6 +12,7 @@ import enumeracija.Vrsta_goriva;
 import enumeracija.model_automobila;
 import gui.prozoriZaPrikaz.AdministratorProzor;
 import gui.prozoriZaPrikaz.MusterijaProzor;
+import gui.prozoriZaPrikaz.ServiserProzor;
 import guiZaIzmjenuIDodavanje.AdministratorDodavanje;
 import guiZaIzmjenuIDodavanje.AutomobilDodavanje;
 import guiZaIzmjenuIDodavanje.MusterijaDodavanje;
@@ -34,17 +35,17 @@ public class AutoServisMain {
 		PoslovnaLogika pl=new PoslovnaLogika();
 		
 //		pl.procitajIzFajlaAdministratori();
-		pl.procitajIzFajlaMusterije();
-//		pl.procitajIzFajlaServiser();
+//		pl.procitajIzFajlaMusterije();
+		pl.procitajIzFajlaServiser();
 //		
 //		
 		
 //		Administrator admin1=new Administrator(1, "Milos", "Sikimic", "1910999153992", Pol.MUSKI, "ljubinje123", "5555" ,"chacho185", "12345", Uloga.ADMINISTRATOR ,150000.00);
 //		Administrator admin2=new Administrator(2,"Marko","Markovic","152442151221",Pol.MUSKI,"trebinje123", "4444","marko123","34321",Uloga.ADMINISTRATOR,130000.00);
-		Musterija musterija1=new Musterija(1,"Ranko","Bokic","1898412974",Pol.MUSKI,"ljubinje53","8888","ranko68","53212",Uloga.MUSTERIJA,55);
+//		Musterija musterija1=new Musterija(1,"Ranko","Bokic","1898412974",Pol.MUSKI,"ljubinje53","8888","ranko68","53212",Uloga.MUSTERIJA,55);
 //		Musterija musterija2=new Musterija(2,"m","m","1898412974",Pol.MUSKI,"ljubinje52","88878","aaa44","53212",Uloga.MUSTERIJA,55);
 
-		pl.dodajUListuMusterija(musterija1);
+//		pl.dodajUListuMusterija(musterija1);
 	//	Automobili automobili1=new Automobili(1,musterija1, Marka_automobila.AUDI, model_automobila.A6, 2005,3.0,140, Vrsta_goriva.DIZEL);
 //		Automobili a= new Automobili(2, musterija1, Marka_automobila.AUDI, model_automobila.A5, 2010, 2.5, 160, Vrsta_goriva.BENZIN);
 //
@@ -56,7 +57,7 @@ public class AutoServisMain {
 //		pl.dodajUListuKnji(s);
 //		pl.upisiUFajlServisnuKnj();
 //		pl.procitajIzFajlaServisnuKnj();
-//		Serviser serviser=new Serviser(1, "Mitar", "Novokmet", "821731731", Pol.MUSKI, "ljubinje999", "0651111", "mmitar", "12345", Uloga.SERVISER , 140000.00, Specijalizacija.VULKANIZER);
+		Serviser serviser=new Serviser(1, "Mitar", "Novokmet", "821731731", Pol.MUSKI, "ljubinje999", "0651111", "mmitar", "12345", Uloga.SERVISER , 140000.00, Specijalizacija.VULKANIZER);
 //
 //		pl.dodajUListuServisera(serviser);
 //		ServisniDio sd = new ServisniDio("nek dio", 55, Marka_automobila.AUDI, model_automobila.A6);
@@ -70,15 +71,15 @@ public class AutoServisMain {
 //		pl.dodajUListuServis(s);
 //		pl.upisiUFajlServis();
 //		pl.procitajIzFajlaServis();
-		pl.dodajUListuMusterija(musterija1);
+//		pl.dodajUListuMusterija(musterija1);
 //		pl.dodajUListuAdministratora(admin1);
 //		pl.dodajUListuAdministratora(admin2);
-//		pl.dodajUListuServisera(serviser);
+		pl.dodajUListuServisera(serviser);
 //
 //		pl.upisiUFajlAutomobili();
-		pl.upisiUFajlMusterija();
+//		pl.upisiUFajlMusterija();
 //		pl.upisiUFajlAdministratora();
-//		pl.upisiUFajlServisera();
+		pl.upisiUFajlServisera();
 //		pl.procitajIzFajlaAutomobili();
 //		pl.procitajIzFajlaServiser();
 //		
@@ -103,8 +104,10 @@ public class AutoServisMain {
 		
 //		AdministratorProzor ap = new AdministratorProzor(pl);
 //		ap.setVisible(true);
-		MusterijaProzor mp = new MusterijaProzor(pl);
-		mp.setVisible(true);
+//		MusterijaProzor mp = new MusterijaProzor(pl);
+	//	mp.setVisible(true);
+		ServiserProzor sp = new ServiserProzor(pl);
+		sp.setVisible(true);
 	}
 	
 

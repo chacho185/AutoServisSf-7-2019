@@ -52,8 +52,9 @@ public class ServiserDodavanje extends JFrame {
 	private PoslovnaLogika poslovnaLogika;
 	private Serviser serviser;
 	
-	public ServiserDodavanje(Serviser serviser) {
+	public ServiserDodavanje(PoslovnaLogika poslovnaLogika,Serviser serviser) {
 		this.serviser = serviser;
+		this.poslovnaLogika = poslovnaLogika;
 		
 		if(this.serviser == null) {
 			setTitle("Dodavanje novog servisera");

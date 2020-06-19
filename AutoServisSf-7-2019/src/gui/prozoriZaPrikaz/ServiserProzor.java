@@ -14,14 +14,15 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-
 import guiZaIzmjenuIDodavanje.AdministratorDodavanje;
+import guiZaIzmjenuIDodavanje.MusterijaDodavanje;
+import guiZaIzmjenuIDodavanje.ServisDodavanje;
+import guiZaIzmjenuIDodavanje.ServiserDodavanje;
 import main.PoslovnaLogika;
 import osoba.Administrator;
+import osoba.Serviser;
 
-
-public class AdministratorProzor extends JFrame {
-	
+public class ServiserProzor extends JFrame {
 	private JToolBar toolbar = new JToolBar();
 	private ImageIcon addIcon = new ImageIcon(getClass().getResource("/slike/add.gif"));
 	private JButton btnAdd = new JButton(addIcon);
@@ -35,16 +36,15 @@ public class AdministratorProzor extends JFrame {
 	private JTable tabela;
 	private PoslovnaLogika poslovnalogika;
 	
-	public AdministratorProzor(PoslovnaLogika poslovnaLogika) {
+	public ServiserProzor(PoslovnaLogika poslovnaLogika) {
 		this.poslovnalogika = poslovnaLogika;
-		setTitle("Administratori");
+		setTitle("Serviseri");
 		setSize(700, 500);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		initGUI();
 		initListeners();
 	}
-
 	private void initGUI() {
 		// TODO Auto-generated method stub
 		toolbar.add(btnAdd);
@@ -54,23 +54,25 @@ public class AdministratorProzor extends JFrame {
 		add(toolbar,BorderLayout.NORTH);
 		
 		String[] zaglavlje = new String[] {
-				"Id","Ime", "Prezime", "Jmbg", "Pol", "Adresa", "Broj telefona", "Korisnicko ime", "Lozinka","Uloga"
+				"Id","Ime", "Prezime", "Jmbg", "Pol", "Adresa", "Broj telefona", "Korisnicko ime", "Lozinka","Uloga","Plata","Specijalizacija"
 		
 		};
-		Object[][] sadrzaj = new Object[poslovnalogika.getListaAdministratora().size()][zaglavlje.length];
+		Object[][] sadrzaj = new Object[poslovnalogika.getListaServisera().size()][zaglavlje.length];
 		
-		for(int i=0; i<poslovnalogika.getListaAdministratora().size(); i++) {
-			Administrator administrator = poslovnalogika.getListaAdministratora().get(i);
-			sadrzaj[i][0] = administrator.getId();
-			sadrzaj[i][1] = administrator.getIme();
-			sadrzaj[i][2] = administrator.getPrezime();
-			sadrzaj[i][3] = administrator.getJMBG();
-			sadrzaj[i][4] = administrator.getPol();
-			sadrzaj[i][5] = administrator.getAdresa();
-			sadrzaj[i][6] = administrator.getBrTel();
-			sadrzaj[i][7] = administrator.getKorIme();
-			sadrzaj[i][8] = administrator.getLozinka();
-			sadrzaj[i][9] = administrator.getUloga();
+		for(int i=0; i<poslovnalogika.getListaServisera().size(); i++) {
+			Serviser serviser = poslovnalogika.getListaServisera().get(i);
+			sadrzaj[i][0] = serviser.getId();
+			sadrzaj[i][1] = serviser.getIme();
+			sadrzaj[i][2] = serviser.getPrezime();
+			sadrzaj[i][3] = serviser.getJMBG();
+			sadrzaj[i][4] = serviser.getPol();
+			sadrzaj[i][5] = serviser.getAdresa();
+			sadrzaj[i][6] = serviser.getBrTel();
+			sadrzaj[i][7] = serviser.getKorIme();
+			sadrzaj[i][8] = serviser.getLozinka();
+			sadrzaj[i][9] = serviser.getUloga();
+			sadrzaj[i][10] = serviser.getPlata();
+			sadrzaj[i][11] = serviser.getSpecijalizacija();
 			
 		}
 		DefaultTableModel model = new DefaultTableModel(sadrzaj, zaglavlje);
@@ -91,8 +93,8 @@ public class AdministratorProzor extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AdministratorDodavanje a = new AdministratorDodavanje(poslovnalogika, null);
-				a.setVisible(true);
+				ServiserDodavanje s = new ServiserDodavanje(poslovnalogika, null);
+				s.setVisible(true);
 				
 			}
 		
@@ -111,12 +113,12 @@ public class AdministratorProzor extends JFrame {
 				}else {
 					DefaultTableModel model = (DefaultTableModel)tabela.getModel();
 					String korIme = model.getValueAt(red, 7).toString();
-					Administrator administrator = poslovnalogika.nadjiAdministratoraPoKorIme(korIme);
-					if(administrator !=null) {
-						AdministratorDodavanje ad = new AdministratorDodavanje(poslovnalogika, administrator);
-						ad.setVisible(true);
+					Serviser serviser = poslovnalogika.nadjiServiseraPoKorIme(korIme);
+					if(serviser !=null) {
+						ServiserDodavanje sd = new ServiserDodavanje(poslovnalogika,null);
+						sd.setVisible(true);
 					}else {
-						JOptionPane.showMessageDialog(null, "Nije moguce pronaci Administratora" ,"Greska", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci Servisera" ,"Greska", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -130,16 +132,16 @@ public class AdministratorProzor extends JFrame {
 				}else {
 					DefaultTableModel model = (DefaultTableModel)tabela.getModel();
 					String korIme = model.getValueAt(red, 7).toString();
-					Administrator administrator = poslovnalogika.nadjiAdministratoraPoKorIme(korIme);
-					if(administrator != null) {
-						int izbor = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete Administratora?" , administrator.getKorIme() + " - Potvrda brisanja" , JOptionPane.YES_NO_OPTION);
+					Serviser serviser = poslovnalogika.nadjiServiseraPoKorIme(korIme);
+					if(serviser != null) {
+						int izbor = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete Servisera?" , serviser.getKorIme() + " - Potvrda brisanja" , JOptionPane.YES_NO_OPTION);
 						if(izbor == JOptionPane.YES_OPTION) {
-							poslovnalogika.getListaAdministratora().remove(administrator);
+							poslovnalogika.getListaServisera().remove(serviser);
 							model.removeRow(red);
-							poslovnalogika.upisiUFajlAdministratora();
+							poslovnalogika.upisiUFajlServisera();
 						}
 						else {
-							JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranog Administratora!","Greska!", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranog Servisera","Greska!", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				}
@@ -152,9 +154,9 @@ public class AdministratorProzor extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			AdministratorProzor.this.dispose();
-			AdministratorProzor ap = new AdministratorProzor(poslovnalogika);
-			ap.setVisible(true);
+			ServiserProzor.this.dispose();
+			ServiserProzor sp = new ServiserProzor(poslovnalogika);
+			sp.setVisible(true);
 			
 
 
@@ -163,3 +165,6 @@ public class AdministratorProzor extends JFrame {
 	
 	}
 }
+
+
+
