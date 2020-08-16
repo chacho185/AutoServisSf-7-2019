@@ -117,7 +117,7 @@ public class ServisDodavanje extends JFrame {
 					String opis = txtOpis.getText().trim();
 					Status status = (Status) cbStatus.getSelectedItem();
 					if(servis == null) {
-						servis = new Servis(automobil, serviser, termin, opis, status);
+						servis = new Servis(++brojac,automobil, serviser, termin, opis, status);
 					poslovnaLogika.getListaServisa().add(servis);
 		
 					}else {

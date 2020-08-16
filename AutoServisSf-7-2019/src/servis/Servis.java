@@ -8,7 +8,8 @@ import enumeracija.Status;
 import osoba.Serviser;
 
 public class Servis {
-
+	
+	private int id;
 	private Automobili automobil;
 	private Serviser serviser;
 	private Date termin;
@@ -18,6 +19,7 @@ public class Servis {
 	
 	public Servis() {
 		super();
+		this.id = 0;
 		this.automobil=new Automobili();
 		this.serviser=new Serviser();
 		this.termin=new Date();
@@ -27,9 +29,10 @@ public class Servis {
 		
 	}
 
-	public Servis(Automobili automobil, Serviser serviser, Date termin, String opis, List<ServisniDio> lista_dijelova,
+	public Servis(int id,Automobili automobil, Serviser serviser, Date termin, String opis, List<ServisniDio> lista_dijelova,
 			Status status) {
 		super();
+		this.id = id;
 		this.automobil = automobil;
 		this.serviser = serviser;
 		this.termin = termin;
@@ -37,15 +40,25 @@ public class Servis {
 		this.lista_dijelova = lista_dijelova;
 		this.status = status;
 	}
-	public Servis(Automobili automobil, Serviser serviser, Date termin, String opis,Status status)
+	public Servis(int id,Automobili automobil, Serviser serviser, Date termin, String opis,Status status)
 			 {
 		super();
+		this.id = id;
 		this.automobil = automobil;
 		this.serviser = serviser;
 		this.termin = termin;
 		this.opis = opis;
 		this.status = status;
 	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Automobili getAutomobil() {
 		return automobil;
 	}

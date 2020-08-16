@@ -3,6 +3,8 @@ package gui.prozoriZaPrikaz;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,13 +16,13 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-
-import guiZaIzmjenuIDodavanje.AdministratorDodavanje;
+import guiZaIzmjenuIDodavanje.AutomobilDodavanje;
+import guiZaIzmjenuIDodavanje.ServisDodavanje;
 import main.PoslovnaLogika;
-import osoba.Administrator;
+import servis.Automobili;
 
 
-public class AdministratorProzor extends JFrame {
+public class AutomobilProzor extends JFrame {
 	
 	private JToolBar toolbar = new JToolBar();
 	private ImageIcon addIcon = new ImageIcon(getClass().getResource("/slike/add.gif"));
@@ -35,16 +37,16 @@ public class AdministratorProzor extends JFrame {
 	private JTable tabela;
 	private PoslovnaLogika poslovnalogika;
 	
-	public AdministratorProzor(PoslovnaLogika poslovnaLogika) {
+	public AutomobilProzor(PoslovnaLogika poslovnaLogika) {
 		this.poslovnalogika = poslovnaLogika;
-		setTitle("Administratori");
+		setTitle("Automobili");
 		setSize(700, 500);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
-		initGUI();
-		initListeners();
+//		initGUI();
+	//	initListeners();
 	}
-
+	
 	private void initGUI() {
 		// TODO Auto-generated method stub
 		toolbar.add(btnAdd);
@@ -54,26 +56,28 @@ public class AdministratorProzor extends JFrame {
 		add(toolbar,BorderLayout.NORTH);
 		
 		String[] zaglavlje = new String[] {
-				"Id","Ime", "Prezime", "Jmbg", "Pol", "Adresa", "Broj telefona", "Korisnicko ime", "Lozinka","Uloga"
+				"Id","Vlasnik", "Marka", "Model", "Godina_proizvodnje", "Zapremina_motora", "Snaga_motora", "Vrsta_goriva"
 		
 		};
-		Object[][] sadrzaj = new Object[poslovnalogika.getListaAdministratora().size()][zaglavlje.length];
+		Object[][] sadrzaj = new Object[poslovnalogika.getListaAutomobila().size()][zaglavlje.length];
 		
-		for(int i=0; i<poslovnalogika.getListaAdministratora().size(); i++) {
-			Administrator administrator = poslovnalogika.getListaAdministratora().get(i);
-			sadrzaj[i][0] = administrator.getId();
-			sadrzaj[i][1] = administrator.getIme();
-			sadrzaj[i][2] = administrator.getPrezime();
-			sadrzaj[i][3] = administrator.getJMBG();
-			sadrzaj[i][4] = administrator.getPol();
-			sadrzaj[i][5] = administrator.getAdresa();
-			sadrzaj[i][6] = administrator.getBrTel();
-			sadrzaj[i][7] = administrator.getKorIme();
-			sadrzaj[i][8] = administrator.getLozinka();
-			sadrzaj[i][9] = administrator.getUloga();
+		
+		for(int i=0; i<poslovnalogika.getListaAutomobila().size(); i++) {
+			Automobili automobil = poslovnalogika.getListaAutomobila().get(i);
+			
+			sadrzaj[i][0] = automobil.getId();
+			sadrzaj[i][1] = automobil.getVlasnik();
+			sadrzaj[i][2] = automobil.getMarka();
+			sadrzaj[i][3] = automobil.getModel();
+			sadrzaj[i][4] = automobil.getGodina_proizvodnje();
+			sadrzaj[i][5] = automobil.getZapremina_motora();
+			sadrzaj[i][6] = automobil.getSnaga_motora();
+			sadrzaj[i][7] = automobil.getVrsta_goriva();
+		
 			
 		}
 		DefaultTableModel model = new DefaultTableModel(sadrzaj, zaglavlje);
+		tabela = new JTable(model);
 		tabela = new JTable(model);
 		tabela.setRowSelectionAllowed(true);
 		tabela.setColumnSelectionAllowed(false);
@@ -85,42 +89,42 @@ public class AdministratorProzor extends JFrame {
 		JScrollPane scroll = new JScrollPane(tabela);
 		add(scroll, BorderLayout.CENTER);
 	}
+	
 	private void initListeners() {
 		btnAdd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AdministratorDodavanje a = new AdministratorDodavanje(poslovnalogika, null);
-				a.setVisible(true);
+				AutomobilDodavanje ad = new AutomobilDodavanje(poslovnalogika, null);
+				ad.setVisible(true);
 				
 			}
-		
-			
-				
 		});
 		btnEdit.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int red = tabela.getSelectedRow();
 				if(red == -1) {
 					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli", "Greska", JOptionPane.WARNING_MESSAGE);
-					
 				}else {
 					DefaultTableModel model = (DefaultTableModel)tabela.getModel();
-					String korIme = model.getValueAt(red, 7).toString();
-					Administrator administrator = poslovnalogika.nadjiAdministratoraPoKorIme(korIme);
-					if(administrator !=null) {
-						AdministratorDodavanje ad = new AdministratorDodavanje(poslovnalogika, administrator);
-						ad.setVisible(true);
+					String idstr = model.getValueAt(red, 0).toString();
+					int id = Integer.parseInt(idstr);
+					Automobili automobil = poslovnalogika.nadjiAutomobilPoId(id);
+					if(automobil != null) {
+						AutomobilDodavanje sd = new AutomobilDodavanje(poslovnalogika, automobil);
+						sd.setVisible(true);
 					}else {
-						JOptionPane.showMessageDialog(null, "Nije moguce pronaci Administratora" ,"Greska", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabrani automobil!", "Greska!", JOptionPane.ERROR_MESSAGE);
 					}
 				}
+				
 			}
 		});
-		btnRemove.addActionListener(new ActionListener() {
+		
+btnRemove.addActionListener(new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int red = tabela.getSelectedRow();
@@ -128,37 +132,38 @@ public class AdministratorProzor extends JFrame {
 					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);	
 				}else {
 					DefaultTableModel model = (DefaultTableModel)tabela.getModel();
-					String korIme = model.getValueAt(red, 7).toString();
-					Administrator administrator = poslovnalogika.nadjiAdministratoraPoKorIme(korIme);
-					if(administrator != null) {
-						int izbor = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete Administratora?" , administrator.getKorIme() + " - Potvrda brisanja" , JOptionPane.YES_NO_OPTION);
+					int id = Integer.parseInt(model.getValueAt(red, 0).toString());
+					Automobili automobil = poslovnalogika.nadjiAutomobilPoId(id);
+					if(automobil != null) {
+						int izbor = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete servis" , automobil.getId() + " - Potvrda brisanja" , JOptionPane.YES_NO_OPTION);
 						if(izbor == JOptionPane.YES_OPTION) {
-							poslovnalogika.getListaAdministratora().remove(administrator);
+							poslovnalogika.getListaAutomobila().remove(automobil);
 							model.removeRow(red);
-							poslovnalogika.upisiUFajlAdministratora();
+							poslovnalogika.upisiUFajlAutomobili();
 						}
-						else {
-							JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranog Administratora!","Greska!", JOptionPane.ERROR_MESSAGE);
-						}
+					}else {
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabrani automobil","Greska!", JOptionPane.ERROR_MESSAGE);
+						
 					}
 				}
 				
 			}
-		
 		});
-			
-		btnRefresh.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			AdministratorProzor.this.dispose();
-			AdministratorProzor ap = new AdministratorProzor(poslovnalogika);
-			ap.setVisible(true);
-			
 
-
-			}
-		});
+btnRefresh.addActionListener(new ActionListener() {
 	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	AutomobilProzor.this.dispose();
+	AutomobilProzor ap = new AutomobilProzor(poslovnalogika);
+	ap.setVisible(true);
+	
+
+
 	}
+});
+
+}
+
+
 }

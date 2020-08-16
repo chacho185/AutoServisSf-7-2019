@@ -3,6 +3,8 @@ package gui.prozoriZaPrikaz;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,12 +17,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 
-import guiZaIzmjenuIDodavanje.AdministratorDodavanje;
+import guiZaIzmjenuIDodavanje.ServisDodavanje;
 import main.PoslovnaLogika;
 import osoba.Administrator;
 
+import servis.Servis;
 
-public class AdministratorProzor extends JFrame {
+public class ServisProzor extends JFrame {
 	
 	private JToolBar toolbar = new JToolBar();
 	private ImageIcon addIcon = new ImageIcon(getClass().getResource("/slike/add.gif"));
@@ -35,16 +38,16 @@ public class AdministratorProzor extends JFrame {
 	private JTable tabela;
 	private PoslovnaLogika poslovnalogika;
 	
-	public AdministratorProzor(PoslovnaLogika poslovnaLogika) {
+	public ServisProzor(PoslovnaLogika poslovnaLogika) {
 		this.poslovnalogika = poslovnaLogika;
-		setTitle("Administratori");
+		setTitle("Servisi");
 		setSize(700, 500);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		initGUI();
 		initListeners();
 	}
-
+	
 	private void initGUI() {
 		// TODO Auto-generated method stub
 		toolbar.add(btnAdd);
@@ -54,26 +57,26 @@ public class AdministratorProzor extends JFrame {
 		add(toolbar,BorderLayout.NORTH);
 		
 		String[] zaglavlje = new String[] {
-				"Id","Ime", "Prezime", "Jmbg", "Pol", "Adresa", "Broj telefona", "Korisnicko ime", "Lozinka","Uloga"
+				"Automobil","Serviser", "Termin", "Opis", "Lista_dijelova", "Status"
 		
 		};
-		Object[][] sadrzaj = new Object[poslovnalogika.getListaAdministratora().size()][zaglavlje.length];
+		Object[][] sadrzaj = new Object[poslovnalogika.getListaServisa().size()][zaglavlje.length];
+		DateFormat konverter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 		
-		for(int i=0; i<poslovnalogika.getListaAdministratora().size(); i++) {
-			Administrator administrator = poslovnalogika.getListaAdministratora().get(i);
-			sadrzaj[i][0] = administrator.getId();
-			sadrzaj[i][1] = administrator.getIme();
-			sadrzaj[i][2] = administrator.getPrezime();
-			sadrzaj[i][3] = administrator.getJMBG();
-			sadrzaj[i][4] = administrator.getPol();
-			sadrzaj[i][5] = administrator.getAdresa();
-			sadrzaj[i][6] = administrator.getBrTel();
-			sadrzaj[i][7] = administrator.getKorIme();
-			sadrzaj[i][8] = administrator.getLozinka();
-			sadrzaj[i][9] = administrator.getUloga();
+		for(int i=0; i<poslovnalogika.getListaServisa().size(); i++) {
+			Servis servis = poslovnalogika.getListaServisa().get(i);
+			String termin = konverter.format(servis.getTermin());
+			sadrzaj[i][0] = servis.getAutomobil();
+			sadrzaj[i][1] = servis.getServiser();
+			sadrzaj[i][2] = servis.getTermin();
+			sadrzaj[i][3] = servis.getOpis();
+			sadrzaj[i][4] = servis.getLista_dijelova();
+			sadrzaj[i][5] = servis.getStatus();
+		
 			
 		}
 		DefaultTableModel model = new DefaultTableModel(sadrzaj, zaglavlje);
+		tabela = new JTable(model);
 		tabela = new JTable(model);
 		tabela.setRowSelectionAllowed(true);
 		tabela.setColumnSelectionAllowed(false);
@@ -90,37 +93,36 @@ public class AdministratorProzor extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AdministratorDodavanje a = new AdministratorDodavanje(poslovnalogika, null);
-				a.setVisible(true);
+				ServisDodavanje sd = new ServisDodavanje(poslovnalogika, null);
+				sd.setVisible(true);
 				
 			}
-		
-			
-				
 		});
 		btnEdit.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int red = tabela.getSelectedRow();
 				if(red == -1) {
 					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli", "Greska", JOptionPane.WARNING_MESSAGE);
-					
 				}else {
 					DefaultTableModel model = (DefaultTableModel)tabela.getModel();
-					String korIme = model.getValueAt(red, 7).toString();
-					Administrator administrator = poslovnalogika.nadjiAdministratoraPoKorIme(korIme);
-					if(administrator !=null) {
-						AdministratorDodavanje ad = new AdministratorDodavanje(poslovnalogika, administrator);
-						ad.setVisible(true);
+					String idstr = model.getValueAt(red, 0).toString();
+					int id = Integer.parseInt(idstr);
+					Servis servis = poslovnalogika.nadjiServisPoId(id);
+					if(servis != null) {
+						ServisDodavanje sd = new ServisDodavanje(poslovnalogika, servis);
+						sd.setVisible(true);
 					}else {
-						JOptionPane.showMessageDialog(null, "Nije moguce pronaci Administratora" ,"Greska", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabrani servis!", "Greska!", JOptionPane.ERROR_MESSAGE);
 					}
 				}
+				
 			}
 		});
-		btnRemove.addActionListener(new ActionListener() {
+		
+btnRemove.addActionListener(new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int red = tabela.getSelectedRow();
@@ -128,37 +130,44 @@ public class AdministratorProzor extends JFrame {
 					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);	
 				}else {
 					DefaultTableModel model = (DefaultTableModel)tabela.getModel();
-					String korIme = model.getValueAt(red, 7).toString();
-					Administrator administrator = poslovnalogika.nadjiAdministratoraPoKorIme(korIme);
-					if(administrator != null) {
-						int izbor = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete Administratora?" , administrator.getKorIme() + " - Potvrda brisanja" , JOptionPane.YES_NO_OPTION);
+					int id = Integer.parseInt(model.getValueAt(red, 0).toString());
+					Servis servis = poslovnalogika.nadjiServisPoId(id);
+					if(servis != null) {
+						int izbor = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete servis" , servis.getId() + " - Potvrda brisanja" , JOptionPane.YES_NO_OPTION);
 						if(izbor == JOptionPane.YES_OPTION) {
-							poslovnalogika.getListaAdministratora().remove(administrator);
+							poslovnalogika.getListaServisa().remove(servis);
 							model.removeRow(red);
-							poslovnalogika.upisiUFajlAdministratora();
+							poslovnalogika.upisiUFajlServis();
 						}
-						else {
-							JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranog Administratora!","Greska!", JOptionPane.ERROR_MESSAGE);
-						}
+					}else {
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabrani servis","Greska!", JOptionPane.ERROR_MESSAGE);
+						
 					}
 				}
 				
 			}
-		
 		});
-			
-		btnRefresh.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			AdministratorProzor.this.dispose();
-			AdministratorProzor ap = new AdministratorProzor(poslovnalogika);
-			ap.setVisible(true);
-			
 
-
-			}
-		});
+btnRefresh.addActionListener(new ActionListener() {
 	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	ServisProzor.this.dispose();
+	ServisProzor sp = new ServisProzor(poslovnalogika);
+	sp.setVisible(true);
+	
+
+
 	}
+});
+
 }
+
+
+		
+		
+	
+	
+
+	}
+

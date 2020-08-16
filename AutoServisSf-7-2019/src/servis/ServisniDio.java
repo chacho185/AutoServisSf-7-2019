@@ -5,6 +5,7 @@ import enumeracija.model_automobila;
 
 public class ServisniDio {
 
+	private int id;
 	private String naziv_dijela;
 	private double cijena;
 	private Marka_automobila marka;
@@ -12,6 +13,7 @@ public class ServisniDio {
 	
 	public ServisniDio() {
 		super();
+		this.id = 0;
 		this.naziv_dijela= "";
 		this.cijena= 0;
 		this.marka=Marka_automobila.AUDI;
@@ -19,12 +21,21 @@ public class ServisniDio {
 		
 	}
 
-	public ServisniDio(String naziv_dijela, double cijena, Marka_automobila marka, model_automobila model) {
+	public ServisniDio(int id,String naziv_dijela, double cijena, Marka_automobila marka, model_automobila model) {
 		super();
+		this.id = id;
 		this.naziv_dijela = naziv_dijela;
 		this.cijena = cijena;
 		this.marka = marka;
 		this.model = model;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNaziv_dijela() {

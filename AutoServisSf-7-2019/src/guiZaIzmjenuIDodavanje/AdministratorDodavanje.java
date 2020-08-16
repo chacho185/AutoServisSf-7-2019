@@ -50,8 +50,9 @@ public class AdministratorDodavanje extends JFrame {
 	private Administrator administrator;
 	
 	public AdministratorDodavanje(PoslovnaLogika poslovnaLogika,Administrator administrator) {
-		this.administrator = administrator;
 		this.poslovnaLogika = poslovnaLogika;
+		this.administrator = administrator;
+
 		
 		if(this.administrator == null) {
 			setTitle("Dodavanje novog administratora");
@@ -66,6 +67,55 @@ public class AdministratorDodavanje extends JFrame {
 		pack();
 	}
 
+
+	
+	
+	private void initGUI() {
+		MigLayout mig = new MigLayout("wrap 2");
+		setLayout(mig);
+		
+		if(this.administrator != null) {
+			popuniPolja();
+		}
+		add(lblIme);
+		add(txtIme);
+		add(lblPrezime);
+		add(txtPrezime);
+		add(lblPol);
+		add(cbPol);
+		add(lblAdresa);
+		add(txtAdresa);
+		add(lblBrojTelefona);
+		add(txtBrojTelefona);
+		add(lblKorisinickoIme);
+		add(txtKorisinickoIme);
+		add(lblLozinka);
+		add(txtLozinka);
+		add(lblUloga);
+		add(cbUloga);
+		add(lblJMBG);
+		add(txtJMBG);
+		add(lblPlate);
+		add(txtPlata);
+		add(new JLabel());
+		add(btnOK, "split 2");
+		add(btnCancel);
+	}
+
+	private void popuniPolja() {
+		txtIme.setText(this.administrator.getIme());
+		txtPrezime.setText(this.administrator.getPrezime());
+		cbPol.setSelectedItem(this.administrator.getPol());
+		txtAdresa.setText(this.administrator.getAdresa());
+		txtBrojTelefona.setText(this.administrator.getBrTel());
+		txtKorisinickoIme.setText(this.administrator.getKorIme());
+		txtLozinka.setText(this.administrator.getLozinka());
+		cbUloga.setSelectedItem(this.administrator.getUloga());
+		txtJMBG.setText(this.administrator.getJMBG());
+		txtPlata.setText(String.valueOf(this.administrator.getPlata()));
+	}
+	
+	
 	private void initListener() {
 		btnOK.addActionListener(new ActionListener() {
 			
@@ -86,7 +136,7 @@ public class AdministratorDodavanje extends JFrame {
 				
 					if(administrator == null) {
 						administrator = new Administrator(id, ime, prezime, jmbg, pol, adresa, brojTelefona, korIme, lozinka, uloga, plata);
-						poslovnaLogika.dodajUListuAdministratora(administrator);
+						poslovnaLogika.getListaAdministratora().add(administrator);
 					}else {
 						administrator.setId(id);
 						administrator.setPrezime(prezime);
@@ -99,6 +149,7 @@ public class AdministratorDodavanje extends JFrame {
 						administrator.setJMBG(jmbg);
 						administrator.setPlata(plata);
 					}
+					poslovnaLogika.getListaAdministratora().add(administrator);
 					poslovnaLogika.upisiUFajlAdministratora();
 					AdministratorDodavanje.this.dispose();
 					AdministratorDodavanje.this.setVisible(false);
@@ -106,7 +157,6 @@ public class AdministratorDodavanje extends JFrame {
 			}
 		});
 	}
-
 	private boolean validacija() {
 		boolean ok = true;
 		String poruka = "Molimo vas da popravite sledece greske u unosu:\n";
@@ -149,51 +199,5 @@ public class AdministratorDodavanje extends JFrame {
 			JOptionPane.showMessageDialog(null, poruka, "Neispravni podaci", JOptionPane.WARNING_MESSAGE);
 		}
 		return ok;
-	}
-	
-	private void initGUI() {
-		MigLayout mig = new MigLayout("wrap 2");
-		setLayout(mig);
-		
-		if(this.administrator != null) {
-			popuniPolja();
-			
-			add(lblIme);
-			add(txtIme);
-			add(lblPrezime);
-			add(txtPrezime);
-			add(lblPol);
-			add(cbPol);
-			add(lblAdresa);
-			add(txtAdresa);
-			add(lblBrojTelefona);
-			add(txtBrojTelefona);
-			add(lblKorisinickoIme);
-			add(txtKorisinickoIme);
-			add(lblLozinka);
-			add(txtLozinka);
-			add(lblUloga);
-			add(cbUloga);
-			add(lblJMBG);
-			add(txtJMBG);
-			add(lblPlate);
-			add(txtPlata);
-			add(new JLabel());
-			add(btnOK, "split 2");
-			add(btnCancel);
-		}
-	}
-
-	private void popuniPolja() {
-		txtIme.setText(this.administrator.getIme());
-		txtPrezime.setText(this.administrator.getPrezime());
-		cbPol.setSelectedItem(this.administrator.getPol());
-		txtAdresa.setText(this.administrator.getAdresa());
-		txtBrojTelefona.setText(this.administrator.getBrTel());
-		txtKorisinickoIme.setText(this.administrator.getKorIme());
-		txtLozinka.setText(this.administrator.getLozinka());
-		cbUloga.setSelectedItem(this.administrator.getUloga());
-		txtJMBG.setText(this.administrator.getJMBG());
-		txtPlata.setText(String.valueOf(this.administrator.getPlata()));
 	}
 }

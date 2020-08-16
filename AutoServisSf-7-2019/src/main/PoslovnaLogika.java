@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import osoba.Administrator;
+import osoba.Korisnik;
 import osoba.Musterija;
 import osoba.Serviser;
 import servis.Automobili;
@@ -126,7 +127,7 @@ public class PoslovnaLogika {
 			while(iter.hasNext()) {
 				Servis s=iter.next();
 				String termin = konverter.format(s.getTermin());
-				bw.write(s.getAutomobil().getId() + "|" + s.getServiser().getKorIme()+ "|" + termin + "|" + s.getOpis() + "|" + s.getStatus());
+				bw.write(s.getId() + "|" + s.getAutomobil().getId() + "|" + s.getServiser().getKorIme()+ "|" + termin + "|" + s.getOpis() + "|" + s.getStatus());
 				bw.newLine();
 				
 			}
@@ -147,14 +148,15 @@ public class PoslovnaLogika {
 			DateFormat konverter = new SimpleDateFormat("dd.MM.yyyy HH.mm");
 			while((line=reader.readLine())!=null) {
 				String[] dijelovi=line.split("\\|");
-				Automobili automobil= getAutomobilById(Integer.parseInt(dijelovi[0]));
+				int id = Integer.parseInt(dijelovi[0]);
+				Automobili automobil= getAutomobilById(Integer.parseInt(dijelovi[1]));
 				
-				Serviser serviser= getServiserByKorIme(dijelovi[1]);
+				Serviser serviser= getServiserByKorIme(dijelovi[2]);
 
-				String terminn = dijelovi[2];
+				String terminn = dijelovi[3];
 				Date termin = konverter.parse(terminn);
-				String opis=dijelovi[3];
-				String status=dijelovi[4];
+				String opis=dijelovi[4];
+				String status=dijelovi[5];
 				
 				System.out.println("servis automobil: " + automobil.getGodina_proizvodnje()); 
 				
@@ -449,6 +451,35 @@ public class PoslovnaLogika {
 		}
 		return null;
 	}
+	public Servis nadjiServisPoId(int id) {
+		for(Servis s: listaServisa) {
+			if(s.getId()==id) {
+				return s;
+				
+			}
+		}
+		return null;
+	}
+	
+	public ServisniDio nadjiServisniDioPoId(int id) {
+		for(ServisniDio s: listaServisniDio) {
+			if(s.getId()==id) {
+				return s;
+				
+			}
+		}
+		return null;
+	}
+	
+	public Automobili nadjiAutomobilPoId(int id) {
+		for(Automobili a: listaAutomobila) {
+			if(id == a.getId()) {
+				return a;
+			}
+		}
+		return null;
+	}
+	
 	
 
 	public void upisiUFajlServisera() {
@@ -556,6 +587,27 @@ public class PoslovnaLogika {
 		return listaServisera;
 	}
 
+	public Korisnik login(String korisnickoIme, String sifra) {
+		for(Korisnik a : listaAdministratora) {
+			if(a.getKorIme().equalsIgnoreCase(korisnickoIme) && 
+				a.getLozinka().equals(sifra)){
+				return a;
+			}
+		}
+		for(Korisnik s: listaServisera) {
+			if(s.getKorIme().equalsIgnoreCase(korisnickoIme) &&
+				s.getLozinka().equals(sifra)){
+					return s;
+				}
+		}
+		for(Korisnik m : listaMusterija) {
+			if(m.getKorIme().equalsIgnoreCase(korisnickoIme) &&
+					m.getLozinka().equals(sifra)) {
+				return m;
+			}
+		}
+		return null;
+	}
 }
 
 

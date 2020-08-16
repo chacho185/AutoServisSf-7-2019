@@ -76,9 +76,10 @@ public class ServisnaKnjizicaDodavanje extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 					String m = cbAutomobil.getSelectedItem().toString();
+					int id = brojac++;
 					Automobili automobil = poslovnaLogika.nadjiAutomobil(m);
 					if(servisnaKnjizica == null) {
-						servisnaKnjizica = new ServisnaKnjizica(automobil);
+						servisnaKnjizica = new ServisnaKnjizica(id, automobil);
 					poslovnaLogika.getListaServisnahKnj().add(servisnaKnjizica);
 		
 					}else {

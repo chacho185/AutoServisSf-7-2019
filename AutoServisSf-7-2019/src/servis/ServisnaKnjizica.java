@@ -5,19 +5,22 @@ import java.util.List;
 
 public class ServisnaKnjizica {
 
+	private int id;
 	private Automobili automobil;
 	private List<Servis> lista_servisa;
 	
 	public ServisnaKnjizica() {
 		super();
+		this.id = id;
 		this.automobil=new Automobili();
 		this.lista_servisa= new ArrayList<Servis>();
 		
 		
 	}
 
-	public ServisnaKnjizica(Automobili a) {
+	public ServisnaKnjizica(int id, Automobili a) {
 		super();
+		this.id = id;
 		this.automobil= a;
 	}
 	
@@ -25,6 +28,15 @@ public class ServisnaKnjizica {
 		super();
 		this.automobil = automobil;
 		this.lista_servisa = lista_servisa;
+	}
+
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Automobili getAutomobil() {

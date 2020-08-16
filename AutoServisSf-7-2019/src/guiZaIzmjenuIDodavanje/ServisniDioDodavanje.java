@@ -60,12 +60,13 @@ public class ServisniDioDodavanje extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(validacija() == true) {
+					int id = brojac++;
 					String naziv_dijela = txtNaziv_dijela.getText().trim();
 					double cijena = Double.parseDouble(txtCijena.getText().trim());
 					Marka_automobila marka_automobila = (Marka_automobila) cbMarkaAutomobila.getSelectedItem();
 					model_automobila model_automobila = (model_automobila) cbModelAutomobila.getSelectedItem();
 					if(servisniDio == null) {
-						servisniDio = new ServisniDio(naziv_dijela, cijena, marka_automobila, model_automobila);
+						servisniDio = new ServisniDio(id, naziv_dijela, cijena, marka_automobila, model_automobila);
 						poslovnaLogika.getListaServisniDio().add(servisniDio);
 					}
 					else {

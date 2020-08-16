@@ -98,6 +98,7 @@ public class MusterijaDodavanje extends JFrame {
 						musterija.setUloga(uloga);
 						musterija.setJMBG(jmbg);
 						musterija.setBrojSkupljenihBodova(BrojSkupljenihBodova);
+						
 					}
 					poslovnaLogika.upisiUFajlAdministratora();
 					MusterijaDodavanje.this.dispose();
@@ -160,31 +161,30 @@ public class MusterijaDodavanje extends JFrame {
 			
 			if(this.musterija != null) {
 				popuniPolja();
-				
-				add(lblIme);
-				add(txtIme);
-				add(lblPrezime);
-				add(txtPrezime);
-				add(lblPol);
-				add(cbPol);
-				add(lblAdresa);
-				add(txtAdresa);
-				add(lblBrojTelefona);
-				add(txtBrojTelefona);
-				add(lblKorisinickoIme);
-				add(txtKorisinickoIme);
-				add(lblLozinka);
-				add(txtLozinka);
-				add(lblUloga);
-				add(cbUloga);
-				add(lblJMBG);
-				add(txtJMBG);
-				add(lblBrojSkupljenihBodova);
-				add(txtBrojSkupljenihBodova);
-				add(new JLabel());
-				add(btnOK, "split 2");
-				add(btnCancel);
 			}
+			add(lblIme);
+			add(txtIme);
+			add(lblPrezime);
+			add(txtPrezime);
+			add(lblPol);
+			add(cbPol);
+			add(lblAdresa);
+			add(txtAdresa);
+			add(lblBrojTelefona);
+			add(txtBrojTelefona);
+			add(lblKorisinickoIme);
+			add(txtKorisinickoIme);
+			add(lblLozinka);
+			add(txtLozinka);
+			add(lblUloga);
+			add(cbUloga);
+			add(lblJMBG);
+			add(txtJMBG);
+			add(lblBrojSkupljenihBodova);
+			add(txtBrojSkupljenihBodova);
+			add(new JLabel());
+			add(btnOK, "split 2");
+			add(btnCancel);
 		}
 
 		private void popuniPolja() {
