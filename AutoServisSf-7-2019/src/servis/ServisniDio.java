@@ -30,6 +30,13 @@ public class ServisniDio {
 		this.model = model;
 	}
 
+	public ServisniDio(String naziv_dijela, double cijena, Marka_automobila marka, model_automobila model) {
+		super();
+		this.naziv_dijela = naziv_dijela;
+		this.cijena = cijena;
+		this.marka = marka;
+		this.model = model;
+	}
 	public int getId() {
 		return id;
 	}

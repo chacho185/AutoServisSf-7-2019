@@ -82,13 +82,13 @@ public class LoginProzor extends JFrame{
 					}else if(prijavljen.getUloga() == Uloga.MUSTERIJA){
 						LoginProzor.this.dispose();
 //						GlavniProzorZaMusteriju lp = new GlavniProzorZaMusteriju(poslovnaLogika, prijavljen);
-						GlavniProzorZaAdministratora lp = new GlavniProzorZaAdministratora(poslovnaLogika, prijavljen);
+						GlavniProzorZaMusteriju lp = new GlavniProzorZaMusteriju(poslovnaLogika, prijavljen);
 						lp.setVisible(true);
 					}else if(prijavljen.getUloga() == Uloga.SERVISER){
 						LoginProzor.this.dispose();
 //						GlavniProzorZaServisera pp = new GlavniProzorZaPacijenta(domZdravlja, prijavljen);
-						GlavniProzorZaAdministratora pp = new GlavniProzorZaAdministratora(poslovnaLogika, prijavljen);
-						pp.setVisible(true);
+						GlavniProzorZaServisera gzs = new GlavniProzorZaServisera(poslovnaLogika, prijavljen);
+						gzs.setVisible(true);
 					}
 				}
 			}

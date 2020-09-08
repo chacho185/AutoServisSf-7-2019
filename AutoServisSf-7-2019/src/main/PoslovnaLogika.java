@@ -14,6 +14,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.print.attribute.standard.Severity;
+
+import enumeracija.Marka_automobila;
+import enumeracija.Pol;
+import enumeracija.Specijalizacija;
+import enumeracija.Status;
+import enumeracija.Uloga;
+import enumeracija.model_automobila;
 import osoba.Administrator;
 import osoba.Korisnik;
 import osoba.Musterija;
@@ -106,8 +114,8 @@ public class PoslovnaLogika {
 				String[] dijelovi=line.split("\\|");
 				Automobili automobil= getAutomobilById(Integer.parseInt(dijelovi[0]));
 				
-				System.out.println("servis automobil: " + automobil.getGodina_proizvodnje()); 
-				
+				ServisnaKnjizica sk = new ServisnaKnjizica(automobil);
+				listaKnjizica.add(sk);
 				
 			}
 			reader.close();
@@ -156,10 +164,10 @@ public class PoslovnaLogika {
 				String terminn = dijelovi[3];
 				Date termin = konverter.parse(terminn);
 				String opis=dijelovi[4];
-				String status=dijelovi[5];
-				
-				System.out.println("servis automobil: " + automobil.getGodina_proizvodnje()); 
-				
+				String statusStr=dijelovi[5];
+				Status status = Status.valueOf(statusStr);
+				Servis s = new Servis(id, automobil, serviser, termin, opis, status);
+				listaServisa.add(s);
 				
 			}
 			reader.close();
@@ -203,12 +211,13 @@ public class PoslovnaLogika {
 				String[] dijelovi=line.split("\\|");
 				String naziv_djela=dijelovi[0];
 				double cijena=Double.parseDouble(dijelovi[1]);
-				String marka=dijelovi[2];
-				String model=dijelovi[3];
+				String markaStr=dijelovi[2];
+				Marka_automobila marka = Marka_automobila.valueOf(markaStr);
+				String modelStr=dijelovi[3];
+				model_automobila model = model_automobila.valueOf(modelStr);
 				
-				System.out.println("Servisni dio: " + naziv_djela); 
-				
-				
+				ServisniDio sd = new ServisniDio(naziv_djela, cijena, marka, model);
+				listaServisniDio.add(sd);
 			}
 			reader.close();
 		}catch(IOException e) {
@@ -248,16 +257,17 @@ public class PoslovnaLogika {
 				String ime=dijelovi[1];
 				String prezime=dijelovi[2];
 				String JMBG=dijelovi[3];
-				String pol=dijelovi[4];
+				String polStr=dijelovi[4];
+				Pol pol = Pol.valueOf(polStr);
 				String adresa=dijelovi[5];
 				String brTel=dijelovi[6];
 				String korIme=dijelovi[7];
 				String lozinka=dijelovi[8];
-				String uloga=dijelovi[9];
+				String ulogaStr=dijelovi[9];
+				Uloga uloga = Uloga.valueOf(ulogaStr);
 				double plata=Double.parseDouble(dijelovi[10]);
-				System.out.println("ime Automehanicara: " + ime + "prezime: " + prezime); 
-				
-				
+				Administrator a = new Administrator(id, ime, prezime, JMBG, pol, adresa, brTel, korIme, lozinka, uloga, plata);
+				listaAdministratora.add(a);
 			}
 			reader.close();
 		}catch(IOException e) {
@@ -298,17 +308,17 @@ public class PoslovnaLogika {
 				String ime=dijelovi[1];
 				String prezime=dijelovi[2];
 				String JMBG=dijelovi[3];
-				String pol=dijelovi[4];
+				String polStr=dijelovi[4];
+				Pol pol = Pol.valueOf(polStr);
 				String adresa=dijelovi[5];
 				String brTel=dijelovi[6];
 				String korIme=dijelovi[7];
 				String lozinka=dijelovi[8];
-				String uloga=dijelovi[9];
+				String ulogaStr=dijelovi[9];
+				Uloga uloga = Uloga.valueOf(ulogaStr);
 				int brojSkupljenihBodova=Integer.parseInt(dijelovi[10]);
-				System.out.println("Ime musterije:" + ime + "Prezime:" + prezime);
-				
-				
-				
+				Musterija m = new Musterija(id, ime, prezime, JMBG, pol, adresa, brTel, korIme, lozinka, uloga, brojSkupljenihBodova);
+				listaMusterija.add(m);
 			}
 			reader.close();
 		}catch(IOException e) {
@@ -519,15 +529,19 @@ public class PoslovnaLogika {
 				String ime=dijelovi[1];
 				String prezime=dijelovi[2];
 				String JMBG=dijelovi[3];
-				String pol=dijelovi[4];
+				String polStr=dijelovi[4];
+				Pol pol = Pol.valueOf(polStr);
 				String adresa=dijelovi[5];
 				String brTel=dijelovi[6];
 				String korIme=dijelovi[7];
 				String lozinka=dijelovi[8];
-				String uloga=dijelovi[9];
+				String ulogaStr=dijelovi[9];
+				Uloga uloga = Uloga.valueOf(ulogaStr);
 				double plata=Double.parseDouble(dijelovi[10]);
-				String specijalizacija=dijelovi[11];
-				System.out.println("Serviser je:" + ime + "Specijalizacija mu je:" + specijalizacija + "Plata je:" + plata);
+				String specijalizacijaStr=dijelovi[11];
+				Specijalizacija specijalizacija = Specijalizacija.valueOf(specijalizacijaStr);
+				Serviser s = new Serviser(id, ime, prezime, JMBG, pol, adresa, brTel, korIme, lozinka, uloga, plata, specijalizacija);
+				listaServisera.add(s);
 			}
 			reader.close();
 			

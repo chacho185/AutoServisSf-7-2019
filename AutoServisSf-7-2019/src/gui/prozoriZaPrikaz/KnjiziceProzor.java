@@ -3,8 +3,6 @@ package gui.prozoriZaPrikaz;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,13 +15,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import guiZaIzmjenuIDodavanje.AutomobilDodavanje;
-import guiZaIzmjenuIDodavanje.ServisDodavanje;
+import guiZaIzmjenuIDodavanje.ServisnaKnjizicaDodavanje;
 import main.PoslovnaLogika;
 import servis.Automobili;
+import servis.ServisnaKnjizica;
 
+public class KnjiziceProzor extends JFrame{
 
-public class AutomobilProzor extends JFrame {
-	
 	private JToolBar toolbar = new JToolBar();
 	private ImageIcon addIcon = new ImageIcon(getClass().getResource("/slike/add.gif"));
 	private JButton btnAdd = new JButton(addIcon);
@@ -36,8 +34,8 @@ public class AutomobilProzor extends JFrame {
 	
 	private JTable tabela;
 	private PoslovnaLogika poslovnalogika;
-	
-	public AutomobilProzor(PoslovnaLogika poslovnaLogika) {
+			
+	public KnjiziceProzor(PoslovnaLogika poslovnaLogika) {
 		this.poslovnalogika = poslovnaLogika;
 		setTitle("Automobili");
 		setSize(700, 500);
@@ -56,23 +54,18 @@ public class AutomobilProzor extends JFrame {
 		add(toolbar,BorderLayout.NORTH);
 		
 		String[] zaglavlje = new String[] {
-				"Id","Vlasnik", "Marka", "Model", "Godina_proizvodnje", "Zapremina_motora", "Snaga_motora", "Vrsta_goriva"
+				"Id","Automobil"
 		
 		};
 		Object[][] sadrzaj = new Object[poslovnalogika.getListaAutomobila().size()][zaglavlje.length];
 		
 		
 		for(int i=0; i<poslovnalogika.getListaAutomobila().size(); i++) {
-			Automobili automobil = poslovnalogika.getListaAutomobila().get(i);
+			ServisnaKnjizica knj = poslovnalogika.getListaServisnahKnj().get(i);
 			
-			sadrzaj[i][0] = automobil.getId();
-			sadrzaj[i][1] = automobil.getVlasnik();
-			sadrzaj[i][2] = automobil.getMarka();
-			sadrzaj[i][3] = automobil.getModel();
-			sadrzaj[i][4] = automobil.getGodina_proizvodnje();
-			sadrzaj[i][5] = automobil.getZapremina_motora();
-			sadrzaj[i][6] = automobil.getSnaga_motora();
-			sadrzaj[i][7] = automobil.getVrsta_goriva();
+			//sadrzaj[i][0] = automobil.getId();
+			sadrzaj[i][1] = knj.getAutomobil().getMarka();
+			
 		
 			
 		}
@@ -89,14 +82,13 @@ public class AutomobilProzor extends JFrame {
 		JScrollPane scroll = new JScrollPane(tabela);
 		add(scroll, BorderLayout.CENTER);
 	}
-	
 	private void initListeners() {
 		btnAdd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AutomobilDodavanje ad = new AutomobilDodavanje(poslovnalogika, null);
-				ad.setVisible(true);
+			ServisnaKnjizicaDodavanje ad = new ServisnaKnjizicaDodavanje(poslovnalogika, null);
+			ad.setVisible(true);
 				
 			}
 		});
@@ -111,9 +103,9 @@ public class AutomobilProzor extends JFrame {
 					DefaultTableModel model = (DefaultTableModel)tabela.getModel();
 					String idstr = model.getValueAt(red, 0).toString();
 					int id = Integer.parseInt(idstr);
-					Automobili automobil = poslovnalogika.nadjiAutomobilPoId(id);
-					if(automobil != null) {
-						AutomobilDodavanje sd = new AutomobilDodavanje(poslovnalogika, automobil);
+					ServisnaKnjizica s = new ServisnaKnjizica();
+					if(s != null) {
+						ServisnaKnjizicaDodavanje sd = new ServisnaKnjizicaDodavanje(poslovnalogika, s);
 						sd.setVisible(true);
 					}else {
 						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabrani automobil!", "Greska!", JOptionPane.ERROR_MESSAGE);
@@ -123,7 +115,7 @@ public class AutomobilProzor extends JFrame {
 			}
 		});
 		
-btnRemove.addActionListener(new ActionListener() {
+		btnRemove.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -133,13 +125,13 @@ btnRemove.addActionListener(new ActionListener() {
 				}else {
 					DefaultTableModel model = (DefaultTableModel)tabela.getModel();
 					int id = Integer.parseInt(model.getValueAt(red, 0).toString());
-					Automobili automobil = poslovnalogika.nadjiAutomobilPoId(id);
-					if(automobil != null) {
-						int izbor = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete servis" , automobil.getId() + " - Potvrda brisanja" , JOptionPane.YES_NO_OPTION);
+					ServisnaKnjizica sk = new ServisnaKnjizica();
+					if(sk != null) {
+						int izbor = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete knnjizicu" , sk.getId() + " - Potvrda brisanja" , JOptionPane.YES_NO_OPTION);
 						if(izbor == JOptionPane.YES_OPTION) {
-							poslovnalogika.getListaAutomobila().remove(automobil);
+							poslovnalogika.getListaServisnahKnj().remove(sk);
 							model.removeRow(red);
-							poslovnalogika.upisiUFajlAutomobili();
+							poslovnalogika.upisiUFajlServisnuKnj();
 						}
 					}else {
 						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabrani automobil","Greska!", JOptionPane.ERROR_MESSAGE);
@@ -150,20 +142,16 @@ btnRemove.addActionListener(new ActionListener() {
 			}
 		});
 
-btnRefresh.addActionListener(new ActionListener() {
+		btnRefresh.addActionListener(new ActionListener() {
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	AutomobilProzor.this.dispose();
-	AutomobilProzor ap = new AutomobilProzor(poslovnalogika);
-	ap.setVisible(true);
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		KnjiziceProzor.this.dispose();
+		KnjiziceProzor ap = new KnjiziceProzor(poslovnalogika);
+		ap.setVisible(true);
 	
-
-
 	}
 });
 
 }
-
-
 }

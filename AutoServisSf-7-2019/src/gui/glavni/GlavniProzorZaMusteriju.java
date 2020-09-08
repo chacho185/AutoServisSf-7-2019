@@ -1,10 +1,14 @@
 package gui.glavni;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import gui.prozoriZaPrikaz.AutomobilZaMusteriju;
 import main.PoslovnaLogika;
 import osoba.Korisnik;
 
@@ -56,6 +60,7 @@ public class GlavniProzorZaMusteriju extends JFrame{
 		this.korisniciMenu.add(musterijeItem);
 		
 		this.servisMenu.add(servisniDioItem);
+		this.servisMenu.add(automobilItem);
 		
 		this.knjiziceMenu.add(knjiziceItem);
 		
@@ -66,6 +71,15 @@ public class GlavniProzorZaMusteriju extends JFrame{
 	}
 	
 	public void initListeners() {
-		
+		automobilItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AutomobilZaMusteriju azp = new AutomobilZaMusteriju(poslovnaLogika, prijavljeniKorisnik);
+				azp.setVisible(true);
+			}
+		});
+		korisniciMenu.setEnabled(false);
+		knjiziceMenu.setEnabled(false);
 	}
 }

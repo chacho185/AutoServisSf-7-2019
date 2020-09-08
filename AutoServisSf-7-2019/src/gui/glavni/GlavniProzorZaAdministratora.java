@@ -10,6 +10,7 @@ import javax.swing.JMenuItem;
 
 import gui.prozoriZaPrikaz.AdministratorProzor;
 import gui.prozoriZaPrikaz.AutomobilProzor;
+import gui.prozoriZaPrikaz.KnjiziceProzor;
 import gui.prozoriZaPrikaz.MusterijaProzor;
 import gui.prozoriZaPrikaz.ServiserProzor;
 import gui.prozoriZaPrikaz.ServisniDioProzor;
@@ -64,6 +65,7 @@ public class GlavniProzorZaAdministratora extends JFrame{
 		this.korisniciMenu.add(musterijeItem);
 		
 		this.servisMenu.add(servisniDioItem);
+		this.servisMenu.add(automobilItem);
 		
 		this.knjiziceMenu.add(knjiziceItem);
 		
@@ -122,12 +124,13 @@ public class GlavniProzorZaAdministratora extends JFrame{
 				sp.setVisible(true);
 			}
 		});
-//		knjiziceItem.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				
-//			}
-//		});
+		knjiziceItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				KnjiziceProzor kp = new KnjiziceProzor(poslovnaLogika);
+				kp.setVisible(true);
+			}
+		});
 	}
 }
